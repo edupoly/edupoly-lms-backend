@@ -7,7 +7,7 @@ const upload = require("./controllers/multer.controller");
 const sharp = require("sharp");
 const fs=require("fs");
 const path = require("path");
-const { addQuestion } = require("./controllers/question.controller");
+const { addQuestion, getQuestions } = require("./controllers/question.controller");
 
 
 const app = express();
@@ -60,6 +60,7 @@ app.post("/addtechnology", async (req, res) => {
 });
 
 app.post("/addQuestion",addQuestion);
+app.get("/getQuestions",getQuestions);
 
 
 app.get("/gettechnologies", async (req, res) => {

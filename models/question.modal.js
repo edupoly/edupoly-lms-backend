@@ -4,7 +4,7 @@ const questionSchema = mongoose.Schema({
     category:String,
     question:String,
     options:Array,
-    correctOptions:Array,
+    correctOption:String,
     tags:Array,
     difficulty:String
 })

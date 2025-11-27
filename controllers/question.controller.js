@@ -14,4 +14,19 @@ const addQuestion = async (req, res) => {
     }
 }
 
-module.exports = {addQuestion};
+const getQuestions = async (req,res) => {
+    try{
+        const questions = await question.find();
+        if(!questions){
+            res.json({message:"No Questions Found"});
+        }
+        else{
+            res.json({questions});
+        }
+    }
+    catch (error){
+        res.json({message:"Error getting Questions",error})
+    }
+}
+
+module.exports = {addQuestion,getQuestions};
