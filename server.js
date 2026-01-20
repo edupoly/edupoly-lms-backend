@@ -25,13 +25,6 @@ dotenv.config();
 dbConnect();
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-// mongoose.connect(
-//     // "mongodb+srv://lakshman:ramu123@cluster0.mmeuw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-
-//     // "mongodb+srv://sai:sai987654321@atlascluster.ym1yuin.mongodb.net/edupoly?retryWrites=true&w=majority&appName=AtlasCluster"
-//     "mongodb+srv://uday:uday123@cluster0.dzvpe7w.mongodb.net/EdupolySite?appName=Cluster0"
-// )
-
 
 // technology routes
 
