@@ -8,7 +8,11 @@ const sharp = require("sharp");
 const fs=require("fs");
 const path = require("path");
 const { addQuestion, getQuestions, getQuestionById, editQuestionById, deleteQuestionById } = require("./controllers/question.controller");
-const { addNewQuiz, getAllQuizzes, editQuizById, getQuizById, deleteQuizById } = require("./controllers/quiz.controller");
+const { addNewQuiz, getAllQuizzes, editQuizById, getQuizById, deleteQuizById, saveResults, getStudentResults, getResultsByQuizId } = require("./controllers/quiz.controller");
+const { signup, login, getUserDetails } = require("./controllers/user.controller");
+const dotenv = require("dotenv");
+const dbConnect = require("./config/dbConnect");
+
 
 
 const app = express();
@@ -17,12 +21,16 @@ app.use(cors())
 app.use(bodyparser.urlencoded({ extended: false }))
 app.use(bodyparser.json())
 
-mongoose.connect(
-    // "mongodb+srv://lakshman:ramu123@cluster0.mmeuw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+dotenv.config();
+dbConnect();
 
-    // "mongodb+srv://sai:sai987654321@atlascluster.ym1yuin.mongodb.net/edupoly?retryWrites=true&w=majority&appName=AtlasCluster"
-    "mongodb+srv://uday:uday123@cluster0.dzvpe7w.mongodb.net/EdupolySite?appName=Cluster0"
-)
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// mongoose.connect(
+//     // "mongodb+srv://lakshman:ramu123@cluster0.mmeuw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+//     // "mongodb+srv://sai:sai987654321@atlascluster.ym1yuin.mongodb.net/edupoly?retryWrites=true&w=majority&appName=AtlasCluster"
+//     "mongodb+srv://uday:uday123@cluster0.dzvpe7w.mongodb.net/EdupolySite?appName=Cluster0"
+// )
 
 
 // technology routes
@@ -60,7 +68,7 @@ app.post("/addtechnology", async (req, res) => {
     }
 });
 
-app.post("/addQuestion",addQuestion);
+app.post("/addQuestion",upload.any(),addQuestion);
 app.get("/getQuestions",getQuestions);
 app.get("/getQuestionById/:Id",getQuestionById);
 app.put("/editQuestionById/:Id",editQuestionById);
@@ -71,6 +79,13 @@ app.get("/getAllQuizzes",getAllQuizzes);
 app.put("/editQuizById/:Id",editQuizById);
 app.get("/getQUizById/:Id",getQuizById);
 app.delete("/deleteQuizById/:Id",deleteQuizById);
+app.post("/submitQuiz",saveResults);
+app.get("/getStudentResults",getStudentResults);
+app.get("/getResultsByQuizId/:Id",getResultsByQuizId);
+
+app.post("/user/signup",signup);
+app.post("/user/login",login);
+app.get("/user/getUserDetails",getUserDetails);
 
 app.get("/gettechnologies", async (req, res) => {
     try {
@@ -341,7 +356,7 @@ app.put("/addcontent/:tid/:cid/:topicId", upload.any(), async (req, res) => {
 
 app.put("/addcontent/:tid/:cid/:topicId", async (req, res) => {
     try {
-        console.log("Request Body:", req.body);
+        // console.log("Request Body:", req.body);
 
         const { tid, cid, topicId } = req.params;
         const contentObj = { ...req.body };
@@ -692,6 +707,6 @@ app.delete("/deletetopic/:tid/:cid/:toid", async (req, res) => {
 })
 
 
-app.listen(3500, () => {
-    console.log("server is running on 3500")
+app.listen(process.env.PORT, () => {
+    console.log(`server is running on ${process.env.PORT}`)
 })
